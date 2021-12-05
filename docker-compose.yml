@@ -1,0 +1,52 @@
+version: "3.1"
+
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    ports:
+      - 33006:3306
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: "allbet" # importante que tengan comillas
+      MYSQL_USER: "allbet"
+      MYSQL_PASSWORD: "allbet"
+      MYSQL_ROOT_PASSWORD: "root.pass"
+      MYSQL_ROOT_HOST: "%"
+    command: "--default-authentication-plugin=mysql_native_password"
+    networks:
+      - laravel
+
+  php: # 3er servicio
+    image: bjvalmaseda/laravel-devenv
+    container_name: php
+    restart: unless-stopped #
+    volumes: # carpeta de proyecto local : carpeta del container que da vida a los archivos PHP
+      - ./src:/var/www/html
+    networks:
+      - laravel # red
+    expose:
+      - 9000
+networks: # declaracion de la red
+  laravel:
+
+volumes:
+  dbdata:
