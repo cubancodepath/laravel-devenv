@@ -9,7 +9,7 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./src:/var/www/html
+      - ./:/var/www/html
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - php
@@ -36,11 +36,11 @@ services:
       - laravel
 
   php: # 3er servicio
-    image: bjvalmaseda/laravel-devenv
+    image: ghcr.io/bjvalmaseda92/laravel-devenv:v1.0
     container_name: php
     restart: unless-stopped #
     volumes: # carpeta de proyecto local : carpeta del container que da vida a los archivos PHP
-      - ./src:/var/www/html
+      - ./:/var/www/html
     networks:
       - laravel # red
     expose:
