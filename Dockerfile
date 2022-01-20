@@ -3,10 +3,15 @@ FROM php:8.0-fpm
 
 
 RUN apt-get update
-RUN apt-get install -y git zip unzip libzip-dev imagemagick
+RUN apt-get install -y git zip unzip libzip-dev libpng-dev
 
 # algunas configuraciones para que funcione el contenedor
-RUN docker-php-ext-install pdo pdo_mysql zip imagick
+
+RUN docker-php-ext-install pdo pdo_mysql zip gd
+
+RUN apt-get install -y libmagickwand-dev --no-install-recommends 
+
+RUN pecl install imagick && docker-php-ext-enable imagick    
 
 # instala composer en el contenedor
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
