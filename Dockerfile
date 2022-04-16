@@ -13,7 +13,7 @@ RUN pecl install imagick && docker-php-ext-enable imagick
 
 RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libwebp-dev libxpm-dev
 
-RUN docker-php-ext-install pdo pdo_mysql zip 
+RUN docker-php-ext-install pdo pdo_mysql zip exif
 
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
 &&  docker-php-ext-install gd
