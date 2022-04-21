@@ -21,6 +21,9 @@ RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/i
 # instala composer en el contenedor
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# install cron and schedule a laravel job
+RUN  apt-get install -y cron && echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1" > /etc/cron.d/laravel-cron
+
 # da permisos para editar los archivos en esta ruta del container
 # Add user for laravel application
 RUN groupadd -g 1000 www
