@@ -39,3 +39,4 @@ COPY --chown=www:www . /var/www/html
 USER www
 
 EXPOSE 9000
+
