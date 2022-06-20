@@ -1,34 +1,25 @@
-# imagen de dockerhub que descargara
-FROM php:8.0-fpm
+# image from dockerhub
+FROM php:8.1-fpm-alpine3.16
 
+#install necessary packages
+RUN apk update
+RUN apk add curl git zip unzip libzip-dev libpng-dev $PHPIZE_DEPS imagemagick-dev libtool imagemagick freetype-dev libjpeg-turbo-dev libwebp-dev libxpm-dev libpq-dev sqlite-dev
 
-RUN apt-get update
-RUN apt-get install -y git zip unzip libzip-dev libpng-dev
-
-# algunas configuraciones para que funcione el contenedor
-
-RUN apt-get install -y libmagickwand-dev --no-install-recommends 
-
-RUN pecl install imagick && docker-php-ext-enable imagick    
-
-RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libwebp-dev libxpm-dev
-
-RUN docker-php-ext-install pdo pdo_mysql zip exif
-
+#downloads the latest version of the imagick library for php 8.1
+RUN pecl install imagick && docker-php-ext-enable imagick
+#php extension
+#configure gd library, pgsql, imagick, sqlite, and webp and install all php extensions
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
-&&  docker-php-ext-install gd
+    && docker-php-ext-configure pgsql --with-pgsql=/usr/local/pgsql \
+    && docker-php-ext-install pdo pdo_mysql zip exif pdo_sqlite pdo pdo_pgsql pgsql gd
 
-# instala composer en el contenedor
+
+# install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# install cron and schedule a laravel job
-RUN  apt-get install -y cron && echo "* * * * * php /var/www/html/artisan schedule:run >> /dev/null 2>&1" > /etc/cron.d/laravel-cron
-
-# da permisos para editar los archivos en esta ruta del container
-# Add user for laravel application
-RUN groupadd -g 1000 www
-RUN useradd -u 1000 -ms /bin/bash -g www www
-
+# configure user and group
+RUN addgroup -g 1000 www
+RUN adduser -u 1000 -G www -h /home/www -D www
 # Copy existing application directory contents
 COPY . /var/www/html
 
@@ -39,4 +30,3 @@ COPY --chown=www:www . /var/www/html
 USER www
 
 EXPOSE 9000
-
