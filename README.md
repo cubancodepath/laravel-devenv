@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![GNU General Public License](https://img.shields.io/badge/license-GPL%20v3-blue.svg?style=flat-rounded)](http://www.gnu.org/licenses/gpl-3.0.en.html) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bjvalmaseda92/laravel-devenv/Docker?logo=github)
+[![GNU General Public License](https://img.shields.io/badge/license-GPL%20v3-blue.svg?style=flat-rounded)](http://www.gnu.org/licenses/gpl-3.0.en.html) ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/bjvalmaseda92/laravel-devenv/Docker?logo=github) ![Version](https://img.shields.io/github/v/tag/bjvalmaseda92/laravel-devenv?label=version)
 
 </div>
 
